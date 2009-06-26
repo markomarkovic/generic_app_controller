@@ -1,24 +1,18 @@
 <?php
 /**
- * Add your application-wide methods in the class below, your controllers
- * will inherit them.
+ * Generic AppController
  *
  * @package		cake
  * @subpackage	cake.app
+ * @author Marko Marković <marko+gac@ultimate.in.rs>
+ * @licence The MIT License
+ * @repository http://github.com/markomarkovic/generic_app_controller/
  */
 class AppController extends Controller {
 
 	// These helpers and components are going to be available in every controller.
 	var $helpers = array('Html', 'Javascript', 'Form', 'Time', 'Text');
 	var $components = array('RequestHandler', 'Cookie', 'Session');
-
-
-	/**
-	 * Don't forget to call parent::beforeFilter(); in any controller that needs to use the beforeFilter
-	 */
-	function beforeFilter() {
-
-	}
 
 
 	/**
