@@ -117,7 +117,7 @@ class AppController extends Controller {
 			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->{$this->modelClass}->del($id)) {
-			$this->Session->setFlash(sprintf(__('%s# %d deleted.', true), __($this->modelClass, true), $id));
+			$this->Session->setFlash(sprintf(__('%s #%d deleted.', true), __($this->modelClass, true), $id));
 			$this->redirect(array('action' => 'index'));
 		}
 	}
