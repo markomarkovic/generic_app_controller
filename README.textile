@@ -1,35 +1,50 @@
 h2. Generic AppController for CakePHP
 
-The Generic AppController (GAC) for CakePHP implements the methods that are most frequently used when baking a 'standard' CakePHP application so you don't have to put them in every controller you create, thus enforcing the DRY principle (Don't Repeat Yourself).
+By using a Generic AppController (GAC) we can drastically reduce the amount of code that is needlessly repeated in the controllers.
+It implements the methods that are most frequently used when baking a 'standard' CakePHP application in such a way that all the child-controllers can use them without modifications following the DRY principle (Don't Repeat Yourself).
+
+It's just like using scaffolding for the controllers except that it uses the views you can customize.
+
+It almost feels like cheating. Or _Magic_.
 
 
 h3. Installation
 
-Copy the app_controller.php to your app directory.
+Copy the generic *app_controller.php* to your *app* directory.
 
 
 h3. Usage
 
-When using GAC, you can have absolutely minimal controllers as all the work is seamlessly done by the parent class. You can also override the existing methods if you need to.
+When using GAC, you only need to have absolutely minimal controllers as all the work is seamlessly done by the parent class. You can also override the existing methods if you need to.
 
-*Minimal news controller example:*
-_app/controllers/news_controller.php_
-<pre>
-<code>
-<?php
+h4. Minimal NewsController example
+
+bq. app/controllers/news_controller.php
+
+<pre><code><?php class NewsController extends AppController {}</code></pre>
+
+That is *all* you need to write if you use only the default methods in your controller. As I've said before, _Magic_.
+
+The methods in the GAC do not interfere with the methods is your other controllers. If you write, for example, index method in your NewsController, Cake is going to use it and ignore the one in the GAC.
+
+Because of this, if you need to use for example a *beforeFilter* in *both* your GAC and in a specific controller, you need to make sure that both are called.
+
+bq. app/controllers/news_controller.php
+
+<pre><code><?php
 class NewsController extends AppController {
-}
-</code>
-</pre>
+	function beforeFilter() {
+		// Do something news specific here
+		// Call the GAC beforeFilter
+		parent::beforeFilter();
+	}
+}</code></pre>
 
-That is all you need to write if you use only the default methods in your controller.
+You can also use the methods from the GAC to DRY:
 
-The methods in the GAC do not interfere with the methods is your other controllers. If you write, for example, index method in your news controller, Cake is going to use it and ignore the one in the GAC. You can also use both like this for example:
+bq. app/controllers/news_controller.php
 
-_app/controllers/news_controller.php_
-<pre>
-<code>
-<?php
+<pre><code><?php
 class NewsController extends AppController {
 	function admin_delete($id = null) {
 		if (!$id) {
@@ -43,20 +58,19 @@ class NewsController extends AppController {
 			parent::admin_delete($id); // Deleting using method from the GAC
 		}
 	}
-}
-</code>
-</pre>
+}</code></pre>
+
 
 h3. The implemented methods
 
-They are functionally the same to the ones that are baked using the console. They work with the baked models and views without any further modifications.
+They are functionally the same to the ones that are baked using the console. They work with the baked Models and Views without any further modifications.
 
 * index
-* view, using id or slug as a parameter, when using Sluggable Behaviour.
+* view, using id as a parameter or slug when using Sluggable Behavior.
 * admin_index
 * admin_view
 * admin_add
 * admin_edit
 * admin_delete
 
-The normal, non-admin add, edit and delete are not implemented, but if you really need that functionality you just need to take admin_* methods and rename them.
+The normal, non-admin, add, edit and delete methods are not implemented, but if you really need that functionality you just need to take admin_* methods and rename them.
