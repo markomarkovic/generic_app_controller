@@ -1,0 +1,54 @@
+h2. Generic AppController for CakePHP
+
+The Generic AppController (GAC) for CakePHP implements the methods that are most frequently used when baking a 'standard' CakePHP application so you don't have to put them in every controller you create, thus enforcing the DRY principle (Don't Repeat Yourself).
+
+
+h3. Installation
+
+Copy the app_controller.php to your app directory.
+
+
+h3. Usage
+
+When using GAC, you can have absolutely minimal controllers as all the work is seamlessly done by the parent class. You can also override the existing methods if you need to.
+
+*Minimal news controller example:*
+_app/controllers/news_controller.php_
+@<?php
+class NewsController extends AppController {
+}@
+
+That is all you need to write if you use only the default methods in your controller.
+
+The methods in the GAC do not interfere with the methods is your other controllers. If you write, for example, index method in your news controller, Cake is going to use it and ignore the one in the GAC. You can also use both like this for example:
+
+_app/controllers/news_controller.php_
+@<?php
+class NewsController extends AppController {
+	function admin_delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid News ID.', true));
+			$this->redirect(array('action' => 'index'));
+		}
+		if ($id < 10) { // News with the id < 10 are not deletable.
+			$this->Session->setFlash(sprintf(__('News #%d cannot be deleted.', true), $id));
+			$this->redirect(array('action' => 'index'));
+		} else {
+			parent::admin_delete($id); // Deleting using method from the GAC
+		}
+	}
+}@
+
+h3. The implemented methods
+
+They are functionally the same to the ones that are baked using the console. They work with the baked models and views without any further modifications.
+
+* index
+* view, using id or slug as a parameter, when using Sluggable Behaviour.
+* admin_index
+* admin_view
+* admin_add
+* admin_edit
+* admin_delete
+
+The normal, non-admin add, edit and delete are not implemented, but if you really need that functionality you just need to take admin_* methods and rename them.
