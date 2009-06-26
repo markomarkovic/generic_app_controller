@@ -14,16 +14,22 @@ When using GAC, you can have absolutely minimal controllers as all the work is s
 
 *Minimal news controller example:*
 _app/controllers/news_controller.php_
-@<?php
+<pre>
+<code>
+<?php
 class NewsController extends AppController {
-}@
+}
+</code>
+</pre>
 
 That is all you need to write if you use only the default methods in your controller.
 
 The methods in the GAC do not interfere with the methods is your other controllers. If you write, for example, index method in your news controller, Cake is going to use it and ignore the one in the GAC. You can also use both like this for example:
 
 _app/controllers/news_controller.php_
-@<?php
+<pre>
+<code>
+<?php
 class NewsController extends AppController {
 	function admin_delete($id = null) {
 		if (!$id) {
@@ -37,7 +43,9 @@ class NewsController extends AppController {
 			parent::admin_delete($id); // Deleting using method from the GAC
 		}
 	}
-}@
+}
+</code>
+</pre>
 
 h3. The implemented methods
 
